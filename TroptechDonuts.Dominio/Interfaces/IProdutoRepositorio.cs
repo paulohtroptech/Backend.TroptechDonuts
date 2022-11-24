@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TroptechDonuts.Dominio.Interfaces
 {
-    public interface IPedido
+    public interface IProdutoRepositorio
     {
     }
 }

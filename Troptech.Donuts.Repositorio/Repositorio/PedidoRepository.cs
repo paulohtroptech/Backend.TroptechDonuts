@@ -8,7 +8,7 @@ using TroptechDonuts.Infra.Data.Dao;
 
 namespace Troptech.Donuts.Repositorio
 {
-    public class PedidoRepository:IPedido
+    public class PedidoRepository:IPedidoRepositorio
     {
 
         private readonly PedidoDao _pedidoDao = new();

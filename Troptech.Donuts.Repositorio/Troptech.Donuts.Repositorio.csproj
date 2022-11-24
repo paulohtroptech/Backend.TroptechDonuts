@@ -8,4 +8,8 @@
     <ProjectReference Include="..\TroptechDonuts.Infra.Data\TroptechDonuts.Infra.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Excecoes\" />
+  </ItemGroup>
+
 </Project>
