@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using Troptech.Donuts.Repositorio;
+﻿using Microsoft.AspNetCore.Mvc;
 using TroptechDonuts.Dominio.Entidades;
 using TroptechDonuts.Dominio.Excecoes;
 using TroptechDonuts.Dominio.Interfaces;
