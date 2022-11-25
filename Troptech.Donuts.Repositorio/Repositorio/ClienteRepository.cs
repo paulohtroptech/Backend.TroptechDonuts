@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TroptechDonuts.Dominio.Entidades;
+using TroptechDonuts.Dominio.Excecoes;
 using TroptechDonuts.Dominio.Interfaces;
 using TroptechDonuts.Infra.Data.Dao;
 
@@ -10,34 +11,69 @@ namespace Troptech.Donuts.Repositorio
     {
         private readonly ClienteDao _clientDao = new();
 
+
         public List<Cliente> BuscarTodosClientes()
         {
-            //var listaDeClientes = _clientDao.DaoBuscarTodosClientes();
+            var listaDeClientes = _clientDao.DaoBuscarTodosClientes();
 
-            //if(listaDeClientes.Count == 0)
-            //    throw new Exception("Não existe nenhum cliente cadastrado.");
+            if (listaDeClientes.Count == 0)
+                throw new ClienteException("Ops, parece que não existe nenhum cliente cadastrado.");
 
             return _clientDao.DaoBuscarTodosClientes();
         }
 
-        public Cliente BuscarClientePorCpf()
+
+        public Cliente BuscarClientePorCpf(string cpf)
         {
-            throw new System.NotImplementedException();
+            var clienteBuscado = _clientDao.DaoBuscarClientePorCPF(cpf);
+
+            if (clienteBuscado == null)
+                throw new ClienteException("Ops, parece que essse cliente não está cadastrado.");
+
+            return clienteBuscado;
         }
 
-        public void CadastrarCliente(Cliente cliente)
+
+        public Cliente CadastrarCliente(Cliente cliente)
         {
-            throw new System.NotImplementedException();
+
+            cliente.ValidarDadosCliente();
+
+            var clienteBuscado = _clientDao.DaoBuscarClientePorCPF(cliente.Cpf);
+
+            if (clienteBuscado != null)
+                throw new ClienteException("Ops, parece que essse cliente já está cadastrado.");
+
+            _clientDao.DaoCadastrarCliente(cliente);
+
+            return cliente;
         }
 
-        public void AtualizarCliente(Cliente cliente)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public void DeletarCliente(string cpf)
         {
-            throw new System.NotImplementedException();
+            var clienteBuscado = _clientDao.DaoBuscarClientePorCPF(cpf);
+
+            if (clienteBuscado == null)
+                throw new ClienteException("Ops, parece que essse cliente não está cadastrado.");
+
+            _clientDao.DaoDeletarCliente(cpf);
         }
+
+
+        public Cliente AtualizarCliente(Cliente cliente)
+        {
+            cliente.ValidarDadosCliente();
+
+            var clienteBuscado = _clientDao.DaoBuscarClientePorCPF(cliente.Cpf);
+
+            if (clienteBuscado == null)
+                throw new ClienteException("Ops, parece que essse cliente não está cadastrado.");
+
+            _clientDao.DaoAtualizarCliente(cliente);
+
+            return cliente;
+        }
+
     }
 }

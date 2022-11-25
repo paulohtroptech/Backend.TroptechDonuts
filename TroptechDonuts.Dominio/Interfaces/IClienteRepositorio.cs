@@ -11,11 +11,11 @@ namespace TroptechDonuts.Dominio.Interfaces
     {
         List<Cliente> BuscarTodosClientes();
 
-        Cliente BuscarClientePorCpf();
+        Cliente BuscarClientePorCpf(string cpf);
 
-        void CadastrarCliente(Cliente cliente);
+        Cliente CadastrarCliente(Cliente cliente);
 
-        void AtualizarCliente(Cliente cliente);
+        Cliente AtualizarCliente(Cliente cliente);
 
         void DeletarCliente(string cpf);
 

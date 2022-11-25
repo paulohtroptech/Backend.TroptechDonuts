@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using Troptech.Donuts.Repositorio;
+using TroptechDonuts.Dominio.Entidades;
+using TroptechDonuts.Dominio.Excecoes;
 using TroptechDonuts.Dominio.Interfaces;
 
 namespace TroptechDonuts.WebApi.Controllers
@@ -17,66 +20,86 @@ namespace TroptechDonuts.WebApi.Controllers
             _clienteRepo = clienteRepo;
         }
 
+
         [HttpGet]
         public ActionResult GetBuscarTodosClientes()
         {
-            var listaDeClientes = _clienteRepo.BuscarTodosClientes();
+            try
+            {
+                var listaDeClientes = _clienteRepo.BuscarTodosClientes();
 
-            return StatusCode(200, listaDeClientes);
+                return StatusCode(200, listaDeClientes);
+            }
+            catch (ClienteException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
         }
 
-        //// GET: ClienteController/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return StatusCode(500);
-        //}
 
-        //// GET: ClienteController/Create
-        //public ActionResult Create()
-        //{
-        //    return StatusCode(500);
-        //}
+        [HttpGet("{cpf}")]
+        public IActionResult GetBuscarClientePorCpf(string cpf)
+        {
+            try
+            {
+                var clienteBuscado = _clienteRepo.BuscarClientePorCpf(cpf);
 
-        //// POST: ClienteController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return StatusCode(200);
-        //    }
-        //    catch
-        //    {
-        //        return StatusCode(500);
-        //    }
-        //}
+                return StatusCode(200, clienteBuscado);
+            }
+            catch (ClienteException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
 
-        //// GET: ClienteController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return Ok();
-        //}
+        [HttpPost]
+        public IActionResult PostCadastrar([FromBody] Cliente cliente)
+        {
+            try
+            {
+                _clienteRepo.CadastrarCliente(cliente);
 
-        //// POST: ClienteController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return StatusCode(200);
-        //    }
-        //    catch
-        //    {
-        //        return StatusCode(500);
-        //    }
-        //}
+                return StatusCode(200, new Resultado(200, "O cliente foi cadastrado com sucesso"));
+            }
+            catch (ClienteException exc)
+            {
+                return StatusCode(500, new Resultado(500, exc.Message));
+            }
+        }
 
-        //// GET: ClienteController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return StatusCode(200);
-        //}
+
+        [HttpDelete]
+        [Route("{cpf}")]
+        public IActionResult DeleteDeletar([FromRoute] string cpf)
+        {
+
+            try
+            {
+                _clienteRepo.DeletarCliente(cpf);
+
+                return StatusCode(200, new Resultado(200, "O cliente foi removido com sucesso"));
+            }
+            catch (ClienteException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
+
+
+        [HttpPut]
+        public IActionResult PutAtualizarCliente([FromBody] Cliente clienteAtualizado)
+        {
+            try
+            {
+                _clienteRepo.AtualizarCliente(clienteAtualizado);
+
+                return StatusCode(200, new Resultado(200, "O cliente foi atualizado com sucesso"));
+            }
+            catch (ClienteException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
+
     }
 }

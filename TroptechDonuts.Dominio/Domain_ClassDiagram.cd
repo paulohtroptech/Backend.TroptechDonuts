@@ -7,30 +7,6 @@
       <FileName>Entidades\Cliente.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TroptechDonuts.Infra.Data.Repositorio.ProdutoRepository">
-    <Position X="2.25" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Repositorio\ProdutoRepository.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Orientation="Bottom" Position="0.1" />
-  </Class>
-  <Class Name="TroptechDonuts.Infra.Data.Repositorio.ClienteRepository">
-    <Position X="0.5" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Repositorio\ClienteRepository.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Orientation="Bottom" Position="0.117" />
-  </Class>
-  <Class Name="TroptechDonuts.Infra.Data.Repositorio.PedidoRepository">
-    <Position X="4" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Repositorio\PedidoRepository.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Orientation="Bottom" Position="0.1" />
-  </Class>
   <Class Name="TroptechDonuts.Dominio.Entidades.Produto">
     <Position X="2.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
@@ -45,27 +21,5 @@
       <FileName>Entidades\Pedido.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="TroptechDonuts.Dominio.Interfaces.IPedido">
-    <Position X="4" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Interfaces\IPedido.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="TroptechDonuts.Dominio.Interfaces.IProduto">
-    <Position X="2.25" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Interfaces\IProduto.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="TroptechDonuts.Dominio.Interfaces.ICliente">
-    <Position X="0.5" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Interfaces\ICliente.cs</FileName>
-      <NewMemberFileName>Interfaces\IPedido.cs</NewMemberFileName>
-    </TypeIdentifier>
-  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
