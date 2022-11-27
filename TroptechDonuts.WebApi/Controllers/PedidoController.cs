@@ -1,83 +1,116 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TroptechDonuts.Dominio.Entidades;
+using TroptechDonuts.Dominio.Excecoes;
+using TroptechDonuts.Dominio.Interfaces;
 
 namespace TroptechDonuts.WebApi.Controllers
 {
+    [ApiController]
+    [Route("api/pedido")]
     public class PedidoController : ControllerBase
     {
-        // GET: PedidoController
-        public ActionResult Index()
+
+        private readonly IPedidoRepositorio _pedidoRepo;
+
+        public PedidoController(IPedidoRepositorio pedidoRepo)
         {
-            return StatusCode(500);
+            _pedidoRepo = pedidoRepo;
         }
 
-        // GET: PedidoController/Details/5
-        public ActionResult Details(int id)
-        {
-            return StatusCode(500);
-        }
 
-        // GET: PedidoController/Create
-        public ActionResult Create()
-        {
-            return StatusCode(500);
-        }
-
-        // POST: PedidoController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpGet]
+        public ActionResult GetBuscarTodosPedidos()
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var listaDePedidos= _pedidoRepo.BuscarTodosPedidos();
+
+                return StatusCode(200, listaDePedidos);
             }
-            catch
+            catch (PedidoException e)
             {
-                return StatusCode(500);
+                return StatusCode(404, new Resultado(404, e.Message));
             }
         }
 
-        // GET: PedidoController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return StatusCode(500);
-        }
-
-        // POST: PedidoController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpGet("{id}")]
+        public IActionResult GetBuscarPedidoPorId(int id)
         {
             try
             {
-                return StatusCode(500);
+                var pedidoBuscado = _pedidoRepo.BuscarPedidoPorId(id);
+
+                return StatusCode(200, pedidoBuscado);
             }
-            catch
+            catch (PedidoException e)
             {
-                return StatusCode(500);
+                return StatusCode(404, new Resultado(404, e.Message));
             }
         }
 
-        // GET: PedidoController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return StatusCode(500);
-        }
-
-        // POST: PedidoController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult PostCadastrarPedido([FromBody] Pedido pedido)
         {
             try
             {
-                return StatusCode(500);
+                _pedidoRepo.CadastrarPedido(pedido);
+
+                return StatusCode(200, new Resultado(200, "O pedido foi cadastrado com sucesso"));
             }
-            catch
+            catch (PedidoException exc)
             {
-                return StatusCode(500);
+                return StatusCode(500, new Resultado(500, exc.Message));
             }
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteDeletarPedido([FromRoute] int id)
+        {
+
+            try
+            {
+                _pedidoRepo.DeletarPedido(id);
+
+                return StatusCode(200, new Resultado(200, "O pedido foi removido com sucesso"));
+            }
+            catch (PedidoException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
+
+        [HttpPut]
+        public IActionResult PutAtualizarPedido([FromBody] Pedido pedidoAtualizado)
+        {
+            try
+            {
+                _pedidoRepo.AtualizarPedido(pedidoAtualizado);
+
+                return StatusCode(200, new Resultado(200, "O pedido foi atualizado com sucesso"));
+            }
+            catch (PedidoException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
+
+
+        [HttpPatch]
+        public IActionResult PatchAtualizarStatusProduto([FromBody] Pedido pedidoAtualizado)
+        {
+            try
+            {
+                _pedidoRepo.AtualizarStatusPedido(pedidoAtualizado);
+
+                return StatusCode(200, new Resultado(200, "O pedido foi atualizado com sucesso"));
+            }
+            catch (PedidoException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
+
     }
 }

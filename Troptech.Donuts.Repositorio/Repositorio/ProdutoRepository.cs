@@ -76,7 +76,7 @@ namespace Troptech.Donuts.Repositorio
             if (produtoBuscado == null)
                 throw new ProdutoException("Ops, parece que esse produto não está cadastrado.");
 
-            _produtoDao.DaoAtualizarQuantidadeProduto(produto);
+            _produtoDao.DaoAtualizarQuantidadeEstoqueProduto(produto);
 
             return produto;
         }

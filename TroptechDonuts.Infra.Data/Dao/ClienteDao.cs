@@ -82,6 +82,46 @@ namespace TroptechDonuts.Infra.Data.Dao
             return null;
         }
 
+//        public Pedido DaoBuscarPedidoPorCpfCliente(string cpf)
+//        {
+
+//            using (var conexao = new SqlConnection(_connectionString))
+//            {
+//                conexao.Open();
+
+//                using (var comando = new SqlCommand())
+//                {
+
+//                    comando.Connection = conexao;
+
+//                    string sql = @"SELECT * FROM TB_PEDIDOS WHERE CPF_CLIENTE = @CPF";
+
+//                    comando.CommandText = sql;
+
+//                    comando.Parameters.AddWithValue("@CPF", cpf);
+
+//                    var leitor = comando.ExecuteReader();
+
+//                    while (leitor.Read())
+//                    {
+//                        Pedido pedidoBuscado = new(
+//                            int.Parse(leitor["CODIGO"].ToString()),
+//                            new Cliente(leitor["CPF"].ToString()),
+//                            new Produto(int.Parse(leitor["ID_PRODUTO"].ToString())),
+//                            int.Parse(leitor["QUANTIDADE"].ToString())
+//                     );
+
+//                        return pedidoBuscado;
+//                    }
+//                }
+//            }
+
+////SELECT TB_CLIENTES.CPF, TB_PEDIDOS.ID FROM TB_CLIENTES
+////INNER JOIN TB_PEDIDOS ON TB_CLIENTES.CPF = TB_PEDIDOS.CPF_CLIENTE
+
+//            return null;
+//        }
+
 
         public Cliente DaoCadastrarCliente(Cliente cliente)
         {
@@ -105,7 +145,6 @@ namespace TroptechDonuts.Infra.Data.Dao
                     comando.CommandText = sql;
 
                     comando.ExecuteNonQuery();
-
                 }
             }
 
@@ -136,7 +175,7 @@ namespace TroptechDonuts.Infra.Data.Dao
             }
         }
 
-        public Cliente DaoAtualizarCliente(Cliente cliente)
+        public void DaoAtualizarCliente(Cliente cliente)
         {
             using (var conexao = new SqlConnection(_connectionString))
             {
@@ -160,8 +199,30 @@ namespace TroptechDonuts.Infra.Data.Dao
                     comando.ExecuteNonQuery();
                 }
             }
+        }
 
-            return null;
+        public void DaoAtualizaPontosFidelidadeCliente(Cliente cliente)
+        {
+            using (var conexao = new SqlConnection(_connectionString))
+            {
+                conexao.Open();
+
+                using (var comando = new SqlCommand())
+                {
+                    comando.Connection = conexao;
+
+                    string sql = @"UPDATE TB_CLIENTES 
+                                   SET  PONTOSFIDELIDADE = @PONTOS_CLIENTE
+                                   WHERE CPF = @CPF_CLIENTE";
+
+                    comando.Parameters.AddWithValue("@CPF_CLIENTE", cliente.Cpf);
+                    comando.Parameters.AddWithValue("@PONTOS_CLIENTE", cliente.PontosFidelidade);
+
+                    comando.CommandText = sql;
+
+                    comando.ExecuteNonQuery();
+                }
+            }
         }
 
 

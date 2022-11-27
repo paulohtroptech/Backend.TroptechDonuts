@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using TroptechDonuts.Dominio.Entidades;
 
 namespace TroptechDonuts.Dominio.Interfaces
 {
     public interface IPedidoRepositorio
     {
+
+        List<Pedido> BuscarTodosPedidos();
+
+        Pedido BuscarPedidoPorId(int id);
+
+        Pedido CadastrarPedido(Pedido pedido);
+
+        Pedido AtualizarPedido(Pedido pedido);
+
+        Pedido AtualizarStatusPedido(Pedido pedido);
+
+        void DeletarPedido(int id);
+
     }
 }
+

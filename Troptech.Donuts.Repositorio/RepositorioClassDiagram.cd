@@ -6,15 +6,15 @@
       <HashCode>AAAAAEAACAAAAAAAAAAgAAQAAAAAAAAABAAAAAAABAA=</HashCode>
       <FileName>Repositorio\ClienteRepository.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Orientation="Bottom" Position="0.252" />
   </Class>
   <Class Name="Troptech.Donuts.Repositorio.PedidoRepository" BaseTypeListCollapsed="true">
     <Position X="5.25" Y="3" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <HashCode>ACAAAAAggAAEACAAAAAAgAAAABAAAAAAAAwAAAAAAAA=</HashCode>
       <FileName>Repositorio\PedidoRepository.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Orientation="Bottom" Position="0.252" />
   </Class>
   <Class Name="Troptech.Donuts.Repositorio.ProdutoRepository" BaseTypeListCollapsed="true">
     <Position X="2.75" Y="3" Width="2.25" />
@@ -22,7 +22,7 @@
       <HashCode>AAgAAAAAAAAAACAgAAAACAgBAAAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>Repositorio\ProdutoRepository.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Orientation="Bottom" Position="0.252" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

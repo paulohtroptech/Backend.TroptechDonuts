@@ -21,6 +21,11 @@ namespace TroptechDonuts.Dominio.Entidades
             this.DataValidade = dataValidade.ToLocalTime();
         }
 
+        public Produto(int id)
+        {
+            this.Id = id;
+        }
+
         public void ValidarDadosProduto()
         {
             if (string.IsNullOrEmpty(Descricao) || this.Descricao.Length < 3)

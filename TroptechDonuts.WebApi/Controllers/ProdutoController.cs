@@ -99,7 +99,7 @@ namespace TroptechDonuts.WebApi.Controllers
 
         [HttpPatch]
         [Route("status")]
-        public IActionResult AtualizarStatusProduto([FromBody] Produto produtoAtualizado)
+        public IActionResult PatchAtualizarStatusProduto([FromBody] Produto produtoAtualizado)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace TroptechDonuts.WebApi.Controllers
 
         [HttpPatch]
         [Route("quantidade")]
-        public IActionResult AtualizarQuantidadeProduto([FromBody] Produto produtoAtualizado)
+        public IActionResult PatchAtualizarQuantidadeProduto([FromBody] Produto produtoAtualizado)
         {
             try
             {

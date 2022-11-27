@@ -32,7 +32,7 @@ namespace TroptechDonuts.Infra.Data.Dao
                             int.Parse(leitor["ID"].ToString()),
                             leitor["DESCRICAO"].ToString(),
                             double.Parse(leitor["PRECOUN"].ToString()),
-                            int.Parse(leitor["QUANTIDADE"].ToString()),
+                            int.Parse(leitor["QUANTIDADEESTOQUE"].ToString()),
                             DateTime.Parse(leitor["DATAVALIDADE"].ToString())
                         );
 
@@ -43,7 +43,6 @@ namespace TroptechDonuts.Infra.Data.Dao
                 return listaProdutos;
             }
         }
-
 
 
         public Produto DaoBuscarProdutoPorId(int id)
@@ -72,7 +71,7 @@ namespace TroptechDonuts.Infra.Data.Dao
                             int.Parse(leitor["ID"].ToString()),
                             leitor["DESCRICAO"].ToString(),
                             double.Parse(leitor["PRECOUN"].ToString()),
-                            int.Parse(leitor["QUANTIDADE"].ToString()),
+                            int.Parse(leitor["QUANTIDADEESTOQUE"].ToString()),
                             DateTime.Parse(leitor["DATAVALIDADE"].ToString())
                         );
 
@@ -132,7 +131,8 @@ namespace TroptechDonuts.Infra.Data.Dao
             }
         }
 
-        public Produto DaoAtualizarProduto(Produto produto)
+
+        public void DaoAtualizarProduto(Produto produto)
         {
             using (var conexao = new SqlConnection(_connectionString))
             {
@@ -145,7 +145,7 @@ namespace TroptechDonuts.Infra.Data.Dao
                     string sql = @"UPDATE TB_PRODUTOS 
                                    SET DESCRICAO = @DESCRICAO,
                                        PRECOUN = @PRECOUN,
-                                       QUANTIDADE = @QUANTIDADE
+                                       QUANTIDADEESTOQUE = @QUANTIDADE
                                        DATAVALIDADE = @DATAVALIDADE,
                                    WHERE ID = @ID_PRODUTO";
 
@@ -160,12 +160,10 @@ namespace TroptechDonuts.Infra.Data.Dao
                     comando.ExecuteNonQuery();
                 }
             }
-
-            return null;
         }
 
 
-        public Produto DaoAtualizarStatusProduto(Produto produto)
+        public void DaoAtualizarStatusProduto(Produto produto)
         {
             using (var conexao = new SqlConnection(_connectionString))
             {
@@ -187,11 +185,10 @@ namespace TroptechDonuts.Infra.Data.Dao
                     comando.ExecuteNonQuery();
                 }
             }
-
-            return null;
         }
 
-        public Produto DaoAtualizarQuantidadeProduto(Produto produto)
+
+        public void DaoAtualizarQuantidadeEstoqueProduto(Produto produto)
         {
             using (var conexao = new SqlConnection(_connectionString))
             {
@@ -202,7 +199,7 @@ namespace TroptechDonuts.Infra.Data.Dao
                     comando.Connection = conexao;
 
                     string sql = @"UPDATE TB_PRODUTOS 
-                                   SET QUANTIDADE = @NOVA_QUANTIDADE,
+                                   SET QUANTIDADEESTOQUE = @NOVA_QUANTIDADE,
                                    WHERE ID = @ID";
 
                     comando.Parameters.AddWithValue("@ID", produto.Id);
@@ -213,8 +210,6 @@ namespace TroptechDonuts.Infra.Data.Dao
                     comando.ExecuteNonQuery();
                 }
             }
-
-            return null;
         }
 
     }

@@ -1,27 +1,54 @@
 ﻿using System;
+using TroptechDonuts.Dominio.Excecoes;
 
 namespace TroptechDonuts.Dominio.Entidades
 {
     public class Pedido
     {
-
-        public Cliente Cliente { get; set; }
+        public int Id { get; set; }
+        public Cliente? Cliente { get; set; }
+        public Produto Produto { get; set; }
         public DateTime DataPedido { get; set; }
+        public int Quantidade { get; set; }
         public double ValorTotal { get; set; }
         public StatusPedido Status { get; set; }
 
-        public Pedido(Cliente cliente, DateTime dataPedido, double valorTotal)
+        public Pedido(
+            int id,
+            Cliente cliente,
+            Produto produto,
+            int quantidade)
         {
-            Cliente = cliente;
-            DataPedido = dataPedido;
-            ValorTotal = valorTotal;
+            this.Id = id;
+            this.Cliente = cliente;
+            this.Produto = produto;
+            this.DataPedido = DateTime.Now;
+            this.Quantidade = quantidade;
+            this.ValorTotal = CalculaValorTotal();
+            this.Status = 0;
+        }
+
+        public Pedido()
+        {
+        }
+
+        private double CalculaValorTotal()
+        {
+            return this.ValorTotal = this.Produto.Preco * this.Quantidade;
         }
 
         public double AtualizaPontosFidelidade()
         {
-            return this.Cliente.PontosFidelidade = this.ValorTotal * 2;
+            return this.Cliente.PontosFidelidade = Math.Round(this.ValorTotal * 2);
         }
 
+
+        public void ValidarDadosPedido()
+        {
+
+            if (this.Quantidade <= 0)
+                throw new ProdutoException("Ops, a quantidade deve ser maior que 0.");
+        }
 
 
     }

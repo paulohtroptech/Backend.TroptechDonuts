@@ -31,6 +31,7 @@ namespace TroptechDonuts.WebApi
         {
             services.AddScoped<IClienteRepositorio, ClienteRepository>();
             services.AddScoped<IProdutoRepositorio, ProdutoRepository>();
+            services.AddScoped<IPedidoRepositorio, PedidoRepository>();
 
             services.AddCors(options =>
             {

@@ -18,6 +18,11 @@ namespace TroptechDonuts.Dominio.Entidades
             this.DataNascimento = dataNascimento;
         }
 
+        public Cliente(string cpf)
+        {
+            this.Cpf = cpf;
+        }
+
 
         public void ValidarDadosCliente()
         {
