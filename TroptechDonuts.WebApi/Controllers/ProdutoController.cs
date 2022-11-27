@@ -1,83 +1,136 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TroptechDonuts.Dominio.Entidades;
+using TroptechDonuts.Dominio.Excecoes;
+using TroptechDonuts.Dominio.Interfaces;
 
 namespace TroptechDonuts.WebApi.Controllers
 {
+
+    [ApiController]
+    [Route("api/produto")]
     public class ProdutoController : ControllerBase
     {
-        // GET: ProdutoController
-        public ActionResult Index()
+        private readonly IProdutoRepositorio _produtoRepo;
+
+        public ProdutoController(IProdutoRepositorio produtoRepo)
         {
-            return StatusCode(500);
+            _produtoRepo = produtoRepo;
         }
 
-        // GET: ProdutoController/Details/5
-        public ActionResult Details(int id)
-        {
-            return StatusCode(500);
-        }
 
-        // GET: ProdutoController/Create
-        public ActionResult Create()
-        {
-            return StatusCode(500);
-        }
-
-        // POST: ProdutoController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpGet]
+        public ActionResult GetBuscarTodosProdutos()
         {
             try
             {
-                return StatusCode(500);
+                var listaDeProdutos = _produtoRepo.BuscarTodosProdutos();
+
+                return StatusCode(200, listaDeProdutos);
             }
-            catch
+            catch (ProdutoException e)
             {
-                return StatusCode(500);
+                return StatusCode(404, new Resultado(404, e.Message));
             }
         }
 
-        // GET: ProdutoController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return StatusCode(500);
-        }
-
-        // POST: ProdutoController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpGet("{id}")]
+        public IActionResult GetBuscarProdutoPorId(int id)
         {
             try
             {
-                return StatusCode(500);
+                var produtoBuscado = _produtoRepo.BuscarProdutoPorId(id);
+
+                return StatusCode(200, produtoBuscado);
             }
-            catch
+            catch (ProdutoException e)
             {
-                return StatusCode(500);
+                return StatusCode(404, new Resultado(404, e.Message));
             }
         }
 
-        // GET: ProdutoController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return StatusCode(500);
-        }
-
-        // POST: ProdutoController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult PostCadastrarProduto([FromBody] Produto produto)
         {
             try
             {
-                return StatusCode(500);
+                _produtoRepo.CadastrarProduto(produto);
+
+                return StatusCode(200, new Resultado(200, "O produto foi cadastrado com sucesso"));
             }
-            catch
+            catch (ClienteException exc)
             {
-                return StatusCode(500);
+                return StatusCode(500, new Resultado(500, exc.Message));
             }
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteDeletarProduto([FromRoute] int id)
+        {
+
+            try
+            {
+                _produtoRepo.DeletarProduto(id);
+
+                return StatusCode(200, new Resultado(200, "O produto foi removido com sucesso"));
+            }
+            catch (ProdutoException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
+
+        [HttpPut]
+        public IActionResult PutAtualizarProduto([FromBody] Produto produtoAtualizado)
+        {
+            try
+            {
+                _produtoRepo.AtualizarProduto(produtoAtualizado);
+
+                return StatusCode(200, new Resultado(200, "O produto foi atualizado com sucesso"));
+            }
+            catch (ProdutoException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
+
+
+        [HttpPatch]
+        [Route("status")]
+        public IActionResult AtualizarStatusProduto([FromBody] Produto produtoAtualizado)
+        {
+            try
+            {
+                _produtoRepo.AtualizarStatusProduto(produtoAtualizado);
+
+                return StatusCode(200, new Resultado(200, "O produto foi atualizado com sucesso"));
+            }
+            catch (ProdutoException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
+
+        [HttpPatch]
+        [Route("quantidade")]
+        public IActionResult AtualizarQuantidadeProduto([FromBody] Produto produtoAtualizado)
+        {
+            try
+            {
+                _produtoRepo.AtualizarQuantidadeProduto(produtoAtualizado);
+
+                return StatusCode(200, new Resultado(200, "O produto foi atualizado com sucesso"));
+            }
+            catch (ProdutoException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
+
+
+
+
     }
 }

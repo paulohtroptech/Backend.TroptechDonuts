@@ -18,7 +18,6 @@ namespace TroptechDonuts.Dominio.Interfaces
         Cliente AtualizarCliente(Cliente cliente);
 
         void DeletarCliente(string cpf);
-
     }
 
 }

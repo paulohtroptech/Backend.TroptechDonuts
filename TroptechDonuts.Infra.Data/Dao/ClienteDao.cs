@@ -28,12 +28,11 @@ namespace TroptechDonuts.Infra.Data.Dao
 
                     while (leitor.Read())
                     {
-                        Cliente clienteBuscado = new()
-                        {
-                            Nome = leitor["NOME"].ToString(),
-                            Cpf = leitor["CPF"].ToString(),
-                            DataNascimento = DateTime.Parse(leitor["DATANASCIMENTO"].ToString())
-                        };
+                        Cliente clienteBuscado = new(
+                            leitor["CPF"].ToString(),
+                            leitor["NOME"].ToString(),
+                            DateTime.Parse(leitor["DATANASCIMENTO"].ToString())
+                        );
 
                         listaDeClientes.Add(clienteBuscado);
                     }
@@ -69,12 +68,11 @@ namespace TroptechDonuts.Infra.Data.Dao
 
                     while (leitor.Read())
                     {
-                        Cliente clienteBuscado = new()
-                        {
-                            Cpf = leitor["CPF"].ToString(),
-                            Nome = leitor["NOME"].ToString(),
-                            DataNascimento = DateTime.Parse(leitor["DATANASCIMENTO"].ToString())
-                        };
+                        Cliente clienteBuscado = new(
+                            leitor["CPF"].ToString(),
+                            leitor["NOME"].ToString(),
+                            DateTime.Parse(leitor["DATANASCIMENTO"].ToString())
+                        );
 
                         return clienteBuscado;
                     }

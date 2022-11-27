@@ -19,7 +19,7 @@ namespace Troptech.Donuts.Repositorio
             if (listaDeClientes.Count == 0)
                 throw new ClienteException("Ops, parece que não existe nenhum cliente cadastrado.");
 
-            return _clientDao.DaoBuscarTodosClientes();
+            return listaDeClientes;
         }
 
 
@@ -28,7 +28,7 @@ namespace Troptech.Donuts.Repositorio
             var clienteBuscado = _clientDao.DaoBuscarClientePorCPF(cpf);
 
             if (clienteBuscado == null)
-                throw new ClienteException("Ops, parece que essse cliente não está cadastrado.");
+                throw new ClienteException("Ops, parece que esse cliente não está cadastrado.");
 
             return clienteBuscado;
         }
@@ -42,7 +42,7 @@ namespace Troptech.Donuts.Repositorio
             var clienteBuscado = _clientDao.DaoBuscarClientePorCPF(cliente.Cpf);
 
             if (clienteBuscado != null)
-                throw new ClienteException("Ops, parece que essse cliente já está cadastrado.");
+                throw new ClienteException("Ops, parece que esse cliente já está cadastrado.");
 
             _clientDao.DaoCadastrarCliente(cliente);
 
@@ -55,7 +55,7 @@ namespace Troptech.Donuts.Repositorio
             var clienteBuscado = _clientDao.DaoBuscarClientePorCPF(cpf);
 
             if (clienteBuscado == null)
-                throw new ClienteException("Ops, parece que essse cliente não está cadastrado.");
+                throw new ClienteException("Ops, parece que esse cliente não está cadastrado.");
 
             _clientDao.DaoDeletarCliente(cpf);
         }
@@ -68,7 +68,7 @@ namespace Troptech.Donuts.Repositorio
             var clienteBuscado = _clientDao.DaoBuscarClientePorCPF(cliente.Cpf);
 
             if (clienteBuscado == null)
-                throw new ClienteException("Ops, parece que essse cliente não está cadastrado.");
+                throw new ClienteException("Ops, parece que esse cliente não está cadastrado.");
 
             _clientDao.DaoAtualizarCliente(cliente);
 

@@ -50,7 +50,7 @@ namespace TroptechDonuts.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostCadastrar([FromBody] Cliente cliente)
+        public IActionResult PostCadastrarCliente([FromBody] Cliente cliente)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace TroptechDonuts.WebApi.Controllers
 
         [HttpDelete]
         [Route("{cpf}")]
-        public IActionResult DeleteDeletar([FromRoute] string cpf)
+        public IActionResult DeleteDeletarCliente([FromRoute] string cpf)
         {
 
             try

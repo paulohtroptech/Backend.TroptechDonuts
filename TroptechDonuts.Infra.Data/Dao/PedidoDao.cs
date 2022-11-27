@@ -8,5 +8,11 @@ namespace TroptechDonuts.Infra.Data.Dao
 {
     public class PedidoDao
     {
+
+
+
+
+
+
     }
 }
