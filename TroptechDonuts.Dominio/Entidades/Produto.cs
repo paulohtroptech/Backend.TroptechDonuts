@@ -12,18 +12,19 @@ namespace TroptechDonuts.Dominio.Entidades
         public DateTime DataValidade{ get; set; }
         public bool Ativo{ get; set; }
 
-        public Produto(int id, string descricao, double preco, int quantidadeEstoque, DateTime dataValidade)
+        public Produto(int id, string descricao, double preco, DateTime dataValidade)
         {
             this.Id= id;
             this.Descricao = descricao;
             this.Preco = preco;
-            this.QuantidadeEstoque = quantidadeEstoque;
+            this.QuantidadeEstoque = 0;
             this.DataValidade = dataValidade.ToLocalTime();
+            this.Ativo = true;
         }
 
-        public Produto(int id)
+        public Produto()
         {
-            this.Id = id;
+            this.Ativo = true;
         }
 
         public void ValidarDadosProduto()

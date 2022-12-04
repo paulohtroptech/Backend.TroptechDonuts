@@ -69,21 +69,21 @@ namespace Troptech.Donuts.Repositorio
 
         public Produto AtualizarQuantidadeProduto(Produto produto)
         {
-            produto.ValidarDadosProduto();
+            //produto.ValidarDadosProduto();
 
             var produtoBuscado = _produtoDao.DaoBuscarProdutoPorId(produto.Id);
 
             if (produtoBuscado == null)
                 throw new ProdutoException("Ops, parece que esse produto não está cadastrado.");
 
-            _produtoDao.DaoAtualizarQuantidadeEstoqueProduto(produto);
+            _produtoDao.DaoAtualizarQuantidadeEstoqueProduto(produto.Id, produto.QuantidadeEstoque);
 
             return produto;
         }
 
         public Produto AtualizarStatusProduto(Produto produto)
         {
-            produto.ValidarDadosProduto();
+            //produto.ValidarDadosProduto();
 
             var produtoBuscado = _produtoDao.DaoBuscarProdutoPorId(produto.Id);
 

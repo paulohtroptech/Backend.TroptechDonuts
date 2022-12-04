@@ -10,7 +10,7 @@ namespace TroptechDonuts.Dominio.Entidades
         public Produto Produto { get; set; }
         public DateTime DataPedido { get; set; }
         public int Quantidade { get; set; }
-        public double ValorTotal { get; set; }
+        public double ValorTotal { get { return CalculaValorTotal(); } }
         public StatusPedido Status { get; set; }
 
         public Pedido(
@@ -24,17 +24,20 @@ namespace TroptechDonuts.Dominio.Entidades
             this.Produto = produto;
             this.DataPedido = DateTime.Now;
             this.Quantidade = quantidade;
-            this.ValorTotal = CalculaValorTotal();
             this.Status = 0;
         }
 
         public Pedido()
         {
+            new Cliente();
+            new Produto();
+            this.DataPedido = DateTime.Now;
+            this.Status = 0;
         }
 
         private double CalculaValorTotal()
         {
-            return this.ValorTotal = this.Produto.Preco * this.Quantidade;
+            return this.Produto.Preco * this.Quantidade;
         }
 
         public double AtualizaPontosFidelidade()
@@ -48,6 +51,9 @@ namespace TroptechDonuts.Dominio.Entidades
 
             if (this.Quantidade <= 0)
                 throw new ProdutoException("Ops, a quantidade deve ser maior que 0.");
+
+            if(this.Produto.Preco <= 0)
+                throw new ProdutoException("Ops, o preço deve ser maior que 0.");
         }
 
 

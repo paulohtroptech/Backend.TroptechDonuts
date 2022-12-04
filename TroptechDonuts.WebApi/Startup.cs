@@ -41,6 +41,7 @@ namespace TroptechDonuts.WebApi
                     {
                         policy.WithOrigins("http://localhost:4200");
                         policy.AllowAnyHeader();
+                        policy.AllowAnyMethod();
                     });
             });
 

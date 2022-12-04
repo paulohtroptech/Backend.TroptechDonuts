@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using TroptechDonuts.Dominio.Entidades;
 
 namespace TroptechDonuts.Infra.Data.Dao
@@ -28,11 +29,13 @@ namespace TroptechDonuts.Infra.Data.Dao
 
                     while (leitor.Read())
                     {
-                        Cliente clienteBuscado = new(
-                            leitor["CPF"].ToString(),
-                            leitor["NOME"].ToString(),
-                            DateTime.Parse(leitor["DATANASCIMENTO"].ToString())
-                        );
+                        Cliente clienteBuscado = new()
+                        {
+                            Cpf = leitor["CPF"].ToString(),
+                            Nome = leitor["NOME"].ToString(),
+                            DataNascimento = DateTime.Parse(leitor["DATANASCIMENTO"].ToString()),
+                            PontosFidelidade = double.Parse(leitor["PONTOSFIDELIDADE"].ToString())
+                        };
 
                         listaDeClientes.Add(clienteBuscado);
                     }
@@ -55,10 +58,12 @@ namespace TroptechDonuts.Infra.Data.Dao
                     comando.Connection = conexao;
 
                     string sql = @"SELECT
-                                       CPF,
-                                       NOME,
-                                       DATANASCIMENTO
-                                   FROM TB_CLIENTES WHERE CPF = @CPF_CLIENTE";
+                                        CPF,
+                                        NOME,
+                                        DATANASCIMENTO,
+                                        PONTOSFIDELIDADE
+                                   FROM TB_CLIENTES 
+                                   WHERE CPF = @CPF_CLIENTE";
 
                     comando.CommandText = sql;
 
@@ -68,11 +73,13 @@ namespace TroptechDonuts.Infra.Data.Dao
 
                     while (leitor.Read())
                     {
-                        Cliente clienteBuscado = new(
-                            leitor["CPF"].ToString(),
-                            leitor["NOME"].ToString(),
-                            DateTime.Parse(leitor["DATANASCIMENTO"].ToString())
-                        );
+                        Cliente clienteBuscado = new()
+                        {
+                            Cpf = leitor["CPF"].ToString(),
+                            Nome = leitor["NOME"].ToString(),
+                            DataNascimento = DateTime.Parse(leitor["DATANASCIMENTO"].ToString()),
+                            PontosFidelidade = double.Parse(leitor["PONTOSFIDELIDADE"].ToString())
+                        };
 
                         return clienteBuscado;
                     }
@@ -133,7 +140,7 @@ namespace TroptechDonuts.Infra.Data.Dao
                 {
                     comando.Connection = conexao;
 
-                    string sql = @"INSERT TB_CLIENTES
+                    string sql = @"INSERT INTO TB_CLIENTES (CPF, NOME, DATANASCIMENTO)
                                    VALUES (@CPF,
                                            @NOME,
                                            @DATANASCIMENTO)";

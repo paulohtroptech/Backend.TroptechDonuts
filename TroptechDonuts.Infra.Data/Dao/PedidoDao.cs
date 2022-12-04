@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 using System.Globalization;
+using TroptechDonuts.Dominio;
 using TroptechDonuts.Dominio.Entidades;
 
 namespace TroptechDonuts.Infra.Data.Dao
@@ -27,12 +28,20 @@ namespace TroptechDonuts.Infra.Data.Dao
 
                     while (leitor.Read())
                     {
-                        Pedido pedidoBuscado = new(
-                            int.Parse(leitor["CODIGO"].ToString()),
-                            new Cliente(leitor["CPF"].ToString()),
-                            new Produto(int.Parse(leitor["ID_PRODUTO"].ToString())),
-                            int.Parse(leitor["QUANTIDADE"].ToString())
-                        );
+                        Pedido pedidoBuscado = new()
+                        {
+                            Id = int.Parse(leitor["ID"].ToString()),
+                            Cliente = new Cliente()
+                            {
+                                Cpf = leitor["CPF_CLIENTE"].ToString()
+                            },
+                            Produto = new Produto()
+                            {
+                                Id = int.Parse(leitor["ID_PRODUTO"].ToString())
+                            },
+                            Quantidade = int.Parse(leitor["QUANTIDADE"].ToString()),
+                            Status = (StatusPedido)int.Parse((leitor["STATUS"].ToString()))
+                        };
                         
                         listaPedidos.Add(pedidoBuscado);
                     }
@@ -65,10 +74,16 @@ namespace TroptechDonuts.Infra.Data.Dao
                     while (leitor.Read())
                     {
                         Pedido pedidoBuscado = new(
-                            int.Parse(leitor["CODIGO"].ToString()),
-                            new Cliente(leitor["CPF"].ToString()),
-                            new Produto(int.Parse(leitor["ID_PRODUTO"].ToString())),
+                            int.Parse(leitor["ID"].ToString()),
+                            new Cliente() {
+                                Cpf = leitor["CPF_CLIENTE"].ToString()
+                            },
+                            new Produto()
+                            {
+                                Id = int.Parse(leitor["ID_PRODUTO"].ToString())
+                            },
                             int.Parse(leitor["QUANTIDADE"].ToString())
+                            
                      );
 
                         return pedidoBuscado;
@@ -87,7 +102,7 @@ namespace TroptechDonuts.Infra.Data.Dao
                 using (var comando = new SqlCommand())
                 {
                     comando.Connection = conexao;
-                    comando.CommandText = @"INSERT INTO TB_PEDIDOS 
+                    comando.CommandText = @"INSERT INTO TB_PEDIDOS (CPF_CLIENTE, ID_PRODUTO, DATAPEDIDO, QUANTIDADE, VALORTOTAL, STATUSPEDIDO)
                                             VALUES (@CPF_CLIENTE, @ID_PRODUTO, @DATAPEDIDO, @QUANTIDADE, @VALORTOTAL, @STATUSPEDIDO)";
 
                     comando.Parameters.AddWithValue("@CPF_CLIENTE", pedido.Cliente.Cpf);

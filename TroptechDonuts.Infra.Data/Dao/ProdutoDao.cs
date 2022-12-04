@@ -28,13 +28,15 @@ namespace TroptechDonuts.Infra.Data.Dao
 
                     while (leitor.Read())
                     {
-                        Produto produtoBuscado = new(
-                            int.Parse(leitor["ID"].ToString()),
-                            leitor["DESCRICAO"].ToString(),
-                            double.Parse(leitor["PRECOUN"].ToString()),
-                            int.Parse(leitor["QUANTIDADEESTOQUE"].ToString()),
-                            DateTime.Parse(leitor["DATAVALIDADE"].ToString())
-                        );
+                        Produto produtoBuscado = new()
+                        {
+                            Id = int.Parse(leitor["ID"].ToString()),
+                            Descricao = leitor["DESCRICAO"].ToString(),
+                            Preco = double.Parse(leitor["PRECOUN"].ToString()),
+                            QuantidadeEstoque = int.Parse(leitor["QUANTIDADEESTOQUE"].ToString()),
+                            DataValidade = DateTime.Parse(leitor["DATAVALIDADE"].ToString()),
+                            Ativo = Boolean.Parse(leitor["ATIVO"].ToString())
+                        };
 
                         listaProdutos.Add(produtoBuscado);
                     }
@@ -67,13 +69,14 @@ namespace TroptechDonuts.Infra.Data.Dao
 
                     while (leitor.Read())
                     {
-                        Produto produtoBuscado = new(
-                            int.Parse(leitor["ID"].ToString()),
-                            leitor["DESCRICAO"].ToString(),
-                            double.Parse(leitor["PRECOUN"].ToString()),
-                            int.Parse(leitor["QUANTIDADEESTOQUE"].ToString()),
-                            DateTime.Parse(leitor["DATAVALIDADE"].ToString())
-                        );
+                        Produto produtoBuscado = new()
+                        {
+                            Id = int.Parse(leitor["ID"].ToString()),
+                            Descricao = leitor["DESCRICAO"].ToString(),
+                            Preco = double.Parse(leitor["PRECOUN"].ToString()),
+                            QuantidadeEstoque = int.Parse(leitor["QUANTIDADEESTOQUE"].ToString()),
+                            DataValidade = DateTime.Parse(leitor["DATAVALIDADE"].ToString())
+                        };
 
                         return produtoBuscado;
                     }
@@ -92,13 +95,18 @@ namespace TroptechDonuts.Infra.Data.Dao
                 using (var comando = new SqlCommand())
                 {
                     comando.Connection = conexao;
-                    comando.CommandText = @"INSERT INTO TB_PRODUTOS 
-                                            VALUES (@DESCRICAO, @PRECOUN, @QUANTIDADE, @DATAVALIDADE)";
+                    comando.CommandText = @"INSERT INTO TB_PRODUTOS (DESCRICAO, PRECOUN, QUANTIDADEESTOQUE, DATAVALIDADE, ATIVO)
+                                            VALUES (@DESCRICAO,
+                                                    @PRECOUN, 
+                                                    @QUANTIDADE,
+                                                    @DATAVALIDADE,
+                                                    @ATIVO)";
 
                     comando.Parameters.AddWithValue("@DESCRICAO", produto.Descricao);
                     comando.Parameters.AddWithValue("@PRECOUN", produto.Preco.ToString(CultureInfo.InvariantCulture));
                     comando.Parameters.AddWithValue("@QUANTIDADE", produto.QuantidadeEstoque);
                     comando.Parameters.AddWithValue("@DATAVALIDADE", produto.DataValidade);
+                    comando.Parameters.AddWithValue("@ATIVO", produto.Ativo);
 
                     comando.ExecuteNonQuery();
                 }
@@ -145,14 +153,12 @@ namespace TroptechDonuts.Infra.Data.Dao
                     string sql = @"UPDATE TB_PRODUTOS 
                                    SET DESCRICAO = @DESCRICAO,
                                        PRECOUN = @PRECOUN,
-                                       QUANTIDADEESTOQUE = @QUANTIDADE
                                        DATAVALIDADE = @DATAVALIDADE,
                                    WHERE ID = @ID_PRODUTO";
 
                     comando.Parameters.AddWithValue("@ID_PRODUTO", produto.Id);
                     comando.Parameters.AddWithValue("@DESCRICAO", produto.Descricao);
                     comando.Parameters.AddWithValue("@PRECOUN", produto.Preco.ToString(CultureInfo.InvariantCulture));
-                    comando.Parameters.AddWithValue("@QUANTIDADE", produto.QuantidadeEstoque);
                     comando.Parameters.AddWithValue("@DATAVALIDADE", produto.DataValidade);
 
                     comando.CommandText = sql;
@@ -174,7 +180,7 @@ namespace TroptechDonuts.Infra.Data.Dao
                     comando.Connection = conexao;
 
                     string sql = @"UPDATE TB_PRODUTOS 
-                                   SET ATIVO = @NOVO_STATUS,
+                                   SET ATIVO = @NOVO_STATUS
                                    WHERE ID = @ID_PRODUTO";
 
                     comando.Parameters.AddWithValue("@ID_PRODUTO", produto.Id);
@@ -188,7 +194,7 @@ namespace TroptechDonuts.Infra.Data.Dao
         }
 
 
-        public void DaoAtualizarQuantidadeEstoqueProduto(Produto produto)
+        public void DaoAtualizarQuantidadeEstoqueProduto(int id, int novaQuantidade)
         {
             using (var conexao = new SqlConnection(_connectionString))
             {
@@ -199,11 +205,11 @@ namespace TroptechDonuts.Infra.Data.Dao
                     comando.Connection = conexao;
 
                     string sql = @"UPDATE TB_PRODUTOS 
-                                   SET QUANTIDADEESTOQUE = @NOVA_QUANTIDADE,
+                                   SET QUANTIDADEESTOQUE = @NOVA_QUANTIDADE
                                    WHERE ID = @ID";
 
-                    comando.Parameters.AddWithValue("@ID", produto.Id);
-                    comando.Parameters.AddWithValue("@NOVA_QUANTIDADE", produto.Ativo);
+                    comando.Parameters.AddWithValue("@ID", id);
+                    comando.Parameters.AddWithValue("@NOVA_QUANTIDADE", novaQuantidade);
 
                     comando.CommandText = sql;
 

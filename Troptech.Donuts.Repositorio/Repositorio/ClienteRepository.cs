@@ -35,7 +35,6 @@ namespace Troptech.Donuts.Repositorio
 
         public Cliente CadastrarCliente(Cliente cliente)
         {
-
             cliente.ValidarDadosCliente();
 
             var clienteBuscado = _clientDao.DaoBuscarClientePorCPF(cliente.Cpf);
@@ -65,7 +64,7 @@ namespace Troptech.Donuts.Repositorio
 
         public Cliente AtualizarCliente(Cliente cliente)
         {
-            cliente.ValidarDadosCliente();
+            //cliente.ValidarDadosCliente();
 
             var clienteBuscado = _clientDao.DaoBuscarClientePorCPF(cliente.Cpf);
 

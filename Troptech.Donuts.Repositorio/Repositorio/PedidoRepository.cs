@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TroptechDonuts.Dominio;
 using TroptechDonuts.Dominio.Entidades;
 using TroptechDonuts.Dominio.Excecoes;
 using TroptechDonuts.Dominio.Interfaces;
@@ -45,13 +46,18 @@ namespace Troptech.Donuts.Repositorio
             var clienteBuscado = _clienteDao.DaoBuscarClientePorCPF(pedido.Cliente.Cpf);
             var produtoBuscado = _produtoDao.DaoBuscarProdutoPorId(pedido.Produto.Id);
 
-            if (clienteBuscado != null)
-                _clienteDao.DaoAtualizaPontosFidelidadeCliente(pedido.Cliente);
-
             if(produtoBuscado.QuantidadeEstoque < pedido.Quantidade)
                 throw new PedidoException("Ops, não temos esta quantidade no estoque.");
 
-            _produtoDao.DaoAtualizarQuantidadeEstoqueProduto(pedido.Produto);
+            if (clienteBuscado != null)
+            {
+                pedido.AtualizaPontosFidelidade();
+                _clienteDao.DaoAtualizaPontosFidelidadeCliente(pedido.Cliente);
+            }
+
+            var novaQuantidade = produtoBuscado.QuantidadeEstoque - pedido.Quantidade;
+
+            _produtoDao.DaoAtualizarQuantidadeEstoqueProduto(pedido.Produto.Id, novaQuantidade);
 
             _pedidoDao.DaoCadastrarPedido(pedido);
 
@@ -65,10 +71,10 @@ namespace Troptech.Donuts.Repositorio
             if (pedidoBuscado == null)
                 throw new PedidoException("Ops, parece que esse pedido não está cadastrado.");
 
-            if (pedidoBuscado.Status == 0)
+            if ((int)pedidoBuscado.Status == (int)StatusPedido.Finalizado)
                 throw new PedidoException("Ops, este pedido não pode ser excluído.");
 
-            _pedidoDao.DaoDeletarPedido(id);
+            //_pedidoDao.DaoDeletarPedido(id);
         }
 
         public Pedido AtualizarPedido(Pedido pedido)

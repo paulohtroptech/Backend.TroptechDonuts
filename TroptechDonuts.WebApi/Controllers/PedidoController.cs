@@ -98,6 +98,7 @@ namespace TroptechDonuts.WebApi.Controllers
 
 
         [HttpPatch]
+        [Route("status")]
         public IActionResult PatchAtualizarStatusProduto([FromBody] Pedido pedidoAtualizado)
         {
             try

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using TroptechDonuts.Dominio.Excecoes;
 
 namespace TroptechDonuts.Dominio.Entidades
@@ -15,14 +16,12 @@ namespace TroptechDonuts.Dominio.Entidades
         {
             this.Cpf = cpf;
             this.Nome = nome;
-            this.DataNascimento = dataNascimento;
+            this.DataNascimento =dataNascimento;
         }
 
-        public Cliente(string cpf)
+        public Cliente()
         {
-            this.Cpf = cpf;
         }
-
 
         public void ValidarDadosCliente()
         {
@@ -32,8 +31,8 @@ namespace TroptechDonuts.Dominio.Entidades
             if (string.IsNullOrEmpty(Nome))
                 throw new ClienteException("Ops, o Nome é obrigatório.");
 
-            if (this.DataNascimento == DateTime.MinValue)
-                throw new ClienteException("Ops, a Data de Nascimento é obrigatória.");
+            if (this.DataNascimento > DateTime.Now)
+                throw new ClienteException("Ops, a Data de Nascimento é inválida.");
         }
 
 
