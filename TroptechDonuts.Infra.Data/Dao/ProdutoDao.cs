@@ -153,7 +153,7 @@ namespace TroptechDonuts.Infra.Data.Dao
                     string sql = @"UPDATE TB_PRODUTOS 
                                    SET DESCRICAO = @DESCRICAO,
                                        PRECOUN = @PRECOUN,
-                                       DATAVALIDADE = @DATAVALIDADE,
+                                       DATAVALIDADE = @DATAVALIDADE
                                    WHERE ID = @ID_PRODUTO";
 
                     comando.Parameters.AddWithValue("@ID_PRODUTO", produto.Id);
