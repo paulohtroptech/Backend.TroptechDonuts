@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TroptechDonuts.Dominio;
@@ -22,26 +23,56 @@ namespace TroptechDonuts.Infra.Data.Dao
                 using (var comando = new SqlCommand())
                 {
                     comando.Connection = conexao;
-                    comando.CommandText = @"SELECT * FROM TB_PEDIDOS";
-
+                    comando.CommandText =
+                        @"SELECT 
+                            PED.ID,
+                            COALESCE(NOME, 'NÃO INFORMADO') as NOME_CLIENTE,
+                            PED.DATAPEDIDO,
+                            PED.VALORTOTAL,
+                            PED.QUANTIDADE,
+                            PED.STATUSPEDIDO,
+                            PROD.PRECOUN 
+                          FROM TB_PEDIDOS AS PED
+                            LEFT JOIN TB_CLIENTES AS CLI
+                              ON PED.CPF_CLIENTE = CLI.CPF
+                            LEFT JOIN TB_PRODUTOS AS PROD
+                              ON PED.ID_PRODUTO = PROD.ID";
                     SqlDataReader leitor = comando.ExecuteReader();
 
                     while (leitor.Read())
                     {
-                        Pedido pedidoBuscado = new()
+                        Pedido pedidoBuscado = new();
+
+                        pedidoBuscado.Id = int.Parse(leitor["ID"].ToString());
+                        pedidoBuscado.Cliente = new()
                         {
-                            Id = int.Parse(leitor["ID"].ToString()),
-                            Cliente = new Cliente()
-                            {
-                                Cpf = leitor["CPF_CLIENTE"].ToString()
-                            },
-                            Produto = new Produto()
-                            {
-                                Id = int.Parse(leitor["ID_PRODUTO"].ToString())
-                            },
-                            Quantidade = int.Parse(leitor["QUANTIDADE"].ToString()),
-                            Status = (StatusPedido)int.Parse((leitor["STATUS"].ToString()))
+                            Nome = leitor["NOME_CLIENTE"].ToString(),
                         };
+                        pedidoBuscado.Produto = new()
+                        {
+                            Preco = double.Parse(leitor["PRECOUN"].ToString()),
+                        };
+                        pedidoBuscado.DataPedido = DateTime.Parse(leitor["DATAPEDIDO"].ToString());
+                        pedidoBuscado.Quantidade = int.Parse(leitor["QUANTIDADE"].ToString());
+                        pedidoBuscado.ValorTotal = double.Parse(leitor["VALORTOTAL"].ToString());
+                        pedidoBuscado.Status = (StatusPedido)int.Parse((leitor["STATUSPEDIDO"].ToString()));
+
+                        //Pedido pedidoBuscado = new()
+                        //{
+                        //    Id = int.Parse(leitor["ID"].ToString()),
+                        //    Cliente = new Cliente()
+                        //    {
+                        //        Nome = leitor["NOME_CLIENTE"].ToString(),
+                        //        Cpf = leitor["CPF"].ToString()
+                        //    },
+                        //    Produto = new Produto()
+                        //    {
+                        //        Id = int.Parse(leitor["ID_PRODUTO"].ToString())
+                        //    },
+                        //    Quantidade = int.Parse(leitor["QUANTIDADE"].ToString()),
+                        //    ValorTotal = double.Parse(leitor["VALORTOTAL"].ToString()),
+                        //    Status = (StatusPedido)int.Parse((leitor["STATUSPEDIDO"].ToString()))
+                        //};
                         
                         listaPedidos.Add(pedidoBuscado);
                     }
@@ -105,7 +136,14 @@ namespace TroptechDonuts.Infra.Data.Dao
                     comando.CommandText = @"INSERT INTO TB_PEDIDOS (CPF_CLIENTE, ID_PRODUTO, DATAPEDIDO, QUANTIDADE, VALORTOTAL, STATUSPEDIDO)
                                             VALUES (@CPF_CLIENTE, @ID_PRODUTO, @DATAPEDIDO, @QUANTIDADE, @VALORTOTAL, @STATUSPEDIDO)";
 
-                    comando.Parameters.AddWithValue("@CPF_CLIENTE", pedido.Cliente.Cpf);
+                    if(pedido.Cliente != null) 
+                    {
+                        comando.Parameters.AddWithValue("@CPF_CLIENTE", pedido.Cliente.Cpf);
+                    }
+                    else
+                    {
+                        comando.Parameters.AddWithValue("@CPF_CLIENTE", "");
+                    }
                     comando.Parameters.AddWithValue("@ID_PRODUTO", pedido.Produto.Id);
                     comando.Parameters.AddWithValue("@DATAPEDIDO", pedido.DataPedido);
                     comando.Parameters.AddWithValue("@QUANTIDADE", pedido.Quantidade);

@@ -208,7 +208,7 @@ namespace TroptechDonuts.Infra.Data.Dao
             }
         }
 
-        public void DaoAtualizaPontosFidelidadeCliente(Cliente cliente)
+        public void DaoAtualizaPontosFidelidadeCliente(string cpf, double novosPontos)
         {
             using (var conexao = new SqlConnection(_connectionString))
             {
@@ -222,8 +222,8 @@ namespace TroptechDonuts.Infra.Data.Dao
                                    SET  PONTOSFIDELIDADE = @PONTOS_CLIENTE
                                    WHERE CPF = @CPF_CLIENTE";
 
-                    comando.Parameters.AddWithValue("@CPF_CLIENTE", cliente.Cpf);
-                    comando.Parameters.AddWithValue("@PONTOS_CLIENTE", cliente.PontosFidelidade);
+                    comando.Parameters.AddWithValue("@CPF_CLIENTE", cpf);
+                    comando.Parameters.AddWithValue("@PONTOS_CLIENTE", novosPontos);
 
                     comando.CommandText = sql;
 

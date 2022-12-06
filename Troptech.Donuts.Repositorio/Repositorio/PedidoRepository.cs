@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TroptechDonuts.Dominio;
 using TroptechDonuts.Dominio.Entidades;
 using TroptechDonuts.Dominio.Excecoes;
@@ -43,18 +39,24 @@ namespace Troptech.Donuts.Repositorio
         {
             pedido.ValidarDadosPedido();
 
-            var clienteBuscado = _clienteDao.DaoBuscarClientePorCPF(pedido.Cliente.Cpf);
+
+            if(pedido.Cliente != null)
+            {
+                var clienteBuscado = _clienteDao.DaoBuscarClientePorCPF(pedido.Cliente.Cpf);
+
+                if (clienteBuscado != null)
+                {
+                    var novosPontosFidelidade = clienteBuscado.PontosFidelidade + pedido.AtualizaPontosFidelidade();
+                    _clienteDao.DaoAtualizaPontosFidelidadeCliente(pedido.Cliente.Cpf, novosPontosFidelidade);
+                }
+
+            }
+
             var produtoBuscado = _produtoDao.DaoBuscarProdutoPorId(pedido.Produto.Id);
 
             if(produtoBuscado.QuantidadeEstoque < pedido.Quantidade)
                 throw new PedidoException("Ops, não temos esta quantidade no estoque.");
-
-            if (clienteBuscado != null)
-            {
-                pedido.AtualizaPontosFidelidade();
-                _clienteDao.DaoAtualizaPontosFidelidadeCliente(pedido.Cliente);
-            }
-
+                
             var novaQuantidade = produtoBuscado.QuantidadeEstoque - pedido.Quantidade;
 
             _produtoDao.DaoAtualizarQuantidadeEstoqueProduto(pedido.Produto.Id, novaQuantidade);
@@ -64,7 +66,17 @@ namespace Troptech.Donuts.Repositorio
             return pedido;
         }
 
-        public void DeletarPedido(int id)
+
+//        {
+//  "produto": {
+//    "id": 4,
+//    "preco": 12
+//  },
+//  "dataPedido": "2022-12-06T01:47:27.873Z",
+//  "quantidade": 2
+//}
+
+    public void DeletarPedido(int id)
         {
             var pedidoBuscado = _pedidoDao.DaoBuscarPedidoPorId(id);
 

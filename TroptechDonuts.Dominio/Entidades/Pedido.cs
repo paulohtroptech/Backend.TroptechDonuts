@@ -10,7 +10,7 @@ namespace TroptechDonuts.Dominio.Entidades
         public Produto Produto { get; set; }
         public DateTime DataPedido { get; set; }
         public int Quantidade { get; set; }
-        public double ValorTotal { get { return CalculaValorTotal(); } }
+        public double ValorTotal { get { return CalculaValorTotal();  } set { } }
         public StatusPedido Status { get; set; }
 
         public Pedido(
@@ -24,15 +24,12 @@ namespace TroptechDonuts.Dominio.Entidades
             this.Produto = produto;
             this.DataPedido = DateTime.Now;
             this.Quantidade = quantidade;
+            this.ValorTotal = this.CalculaValorTotal();
             this.Status = 0;
         }
 
         public Pedido()
         {
-            new Cliente();
-            new Produto();
-            this.DataPedido = DateTime.Now;
-            this.Status = 0;
         }
 
         private double CalculaValorTotal()
