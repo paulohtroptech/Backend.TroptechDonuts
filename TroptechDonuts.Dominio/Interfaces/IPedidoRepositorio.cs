@@ -10,6 +10,8 @@ namespace TroptechDonuts.Dominio.Interfaces
 
         Pedido BuscarPedidoPorId(int id);
 
+        Pedido BuscarDetalhePedidoPorId(int id);
+
         Pedido CadastrarPedido(Pedido pedido);
 
         Pedido AtualizarPedido(Pedido pedido);

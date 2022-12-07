@@ -46,6 +46,40 @@ namespace TroptechDonuts.Infra.Data.Dao
             }
         }
 
+        public List<Produto> DaoBuscarTodosProdutosAtivos()
+        {
+            var listaProdutos = new List<Produto>();
+
+            using (var conexao = new SqlConnection(_connectionString))
+            {
+                conexao.Open();
+                using (var comando = new SqlCommand())
+                {
+                    comando.Connection = conexao;
+                    comando.CommandText = @"SELECT * FROM TB_PRODUTOS WHERE ATIVO = 1";
+
+                    SqlDataReader leitor = comando.ExecuteReader();
+
+                    while (leitor.Read())
+                    {
+                        Produto produtoBuscado = new()
+                        {
+                            Id = int.Parse(leitor["ID"].ToString()),
+                            Descricao = leitor["DESCRICAO"].ToString(),
+                            Preco = double.Parse(leitor["PRECOUN"].ToString()),
+                            QuantidadeEstoque = int.Parse(leitor["QUANTIDADEESTOQUE"].ToString()),
+                            DataValidade = DateTime.Parse(leitor["DATAVALIDADE"].ToString()),
+                            Ativo = Boolean.Parse(leitor["ATIVO"].ToString())
+                        };
+
+                        listaProdutos.Add(produtoBuscado);
+                    }
+                }
+
+                return listaProdutos;
+            }
+        }
+
 
         public Produto DaoBuscarProdutoPorId(int id)
         {

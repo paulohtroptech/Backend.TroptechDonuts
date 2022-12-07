@@ -35,6 +35,16 @@ namespace Troptech.Donuts.Repositorio
             return pedidoBuscado;
         }
 
+        public Pedido BuscarDetalhePedidoPorId(int id)
+        {
+            var pedidoBuscado = _pedidoDao.DaoBuscarDetalhePedidoPorId(id);
+
+            if (pedidoBuscado == null)
+                throw new PedidoException("Ops, parece que esse pedido não está cadastrado.");
+
+            return pedidoBuscado;
+        }
+
         public Pedido CadastrarPedido(Pedido pedido)
         {
             pedido.ValidarDadosPedido();
@@ -67,14 +77,6 @@ namespace Troptech.Donuts.Repositorio
         }
 
 
-//        {
-//  "produto": {
-//    "id": 4,
-//    "preco": 12
-//  },
-//  "dataPedido": "2022-12-06T01:47:27.873Z",
-//  "quantidade": 2
-//}
 
     public void DeletarPedido(int id)
         {
@@ -86,7 +88,7 @@ namespace Troptech.Donuts.Repositorio
             if ((int)pedidoBuscado.Status == (int)StatusPedido.Finalizado)
                 throw new PedidoException("Ops, este pedido não pode ser excluído.");
 
-            //_pedidoDao.DaoDeletarPedido(id);
+            _pedidoDao.DaoDeletarPedido(id);
         }
 
         public Pedido AtualizarPedido(Pedido pedido)
@@ -103,7 +105,7 @@ namespace Troptech.Donuts.Repositorio
 
         public Pedido AtualizarStatusPedido(Pedido pedido)
         {
-            _pedidoDao.DaoAtualizarPedido(pedido);
+            _pedidoDao.DaoAtualizarStatusPedido(pedido);
 
             return pedido;
         }

@@ -170,7 +170,9 @@ namespace TroptechDonuts.Infra.Data.Dao
 
                     comando.Connection = conexao;
 
-                    string sql = @"DELETE FROM TB_CLIENTES WHERE CPF = @CPF_CLIENTE";
+                    string sql = @"DELETE FROM TB_PEDIDOS
+                                   WHERE CPF_CLIENTE IN(select CPF from TB_CLIENTES WHERE CPF_CLIENTE = @CPF_CLIENTE)
+                                   DELETE FROM TB_CLIENTES WHERE CPF = @CPF_CLIENTE";
 
                     comando.Parameters.AddWithValue("@CPF_CLIENTE", cpfCliente);
 

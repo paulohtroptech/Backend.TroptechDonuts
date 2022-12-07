@@ -33,6 +33,21 @@ namespace TroptechDonuts.WebApi.Controllers
                 return StatusCode(404, new Resultado(404, e.Message));
             }
         }
+        [HttpGet]
+        [Route("ativo")]
+        public ActionResult GetBuscarTodosProdutosAtivos()
+        {
+            try
+            {
+                var listaDeProdutos = _produtoRepo.BuscarTodosProdutosAtivos();
+
+                return StatusCode(200, listaDeProdutos);
+            }
+            catch (ProdutoException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
 
         [HttpGet("{id}")]
         public IActionResult GetBuscarProdutoPorId(int id)
@@ -58,7 +73,7 @@ namespace TroptechDonuts.WebApi.Controllers
 
                 return StatusCode(200, new Resultado(200, "O produto foi cadastrado com sucesso"));
             }
-            catch (ClienteException exc)
+            catch (ProdutoException exc)
             {
                 return StatusCode(500, new Resultado(500, exc.Message));
             }

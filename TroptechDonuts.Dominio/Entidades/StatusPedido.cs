@@ -2,9 +2,8 @@
 {
     public enum StatusPedido
     {
-
-            Andamento = 0,
-            Transito = 1,
-            Finalizado = 2
+        Andamento = 1,
+        Transito = 2,
+        Finalizado = 3
     }
 }

@@ -26,7 +26,7 @@ namespace TroptechDonuts.Infra.Data.Dao
                     comando.CommandText =
                         @"SELECT 
                             PED.ID,
-                            COALESCE(NOME, 'NÃO INFORMADO') as NOME_CLIENTE,
+                            COALESCE(NOME, 'NÃO CADASTRADO') as NOME_CLIENTE,
                             PED.DATAPEDIDO,
                             PED.VALORTOTAL,
                             PED.QUANTIDADE,
@@ -57,22 +57,6 @@ namespace TroptechDonuts.Infra.Data.Dao
                         pedidoBuscado.ValorTotal = double.Parse(leitor["VALORTOTAL"].ToString());
                         pedidoBuscado.Status = (StatusPedido)int.Parse((leitor["STATUSPEDIDO"].ToString()));
 
-                        //Pedido pedidoBuscado = new()
-                        //{
-                        //    Id = int.Parse(leitor["ID"].ToString()),
-                        //    Cliente = new Cliente()
-                        //    {
-                        //        Nome = leitor["NOME_CLIENTE"].ToString(),
-                        //        Cpf = leitor["CPF"].ToString()
-                        //    },
-                        //    Produto = new Produto()
-                        //    {
-                        //        Id = int.Parse(leitor["ID_PRODUTO"].ToString())
-                        //    },
-                        //    Quantidade = int.Parse(leitor["QUANTIDADE"].ToString()),
-                        //    ValorTotal = double.Parse(leitor["VALORTOTAL"].ToString()),
-                        //    Status = (StatusPedido)int.Parse((leitor["STATUSPEDIDO"].ToString()))
-                        //};
                         
                         listaPedidos.Add(pedidoBuscado);
                     }
@@ -81,6 +65,8 @@ namespace TroptechDonuts.Infra.Data.Dao
                 return listaPedidos;
             }
         }
+
+
 
         public Pedido DaoBuscarPedidoPorId(int id)
         {
@@ -104,18 +90,82 @@ namespace TroptechDonuts.Infra.Data.Dao
 
                     while (leitor.Read())
                     {
-                        Pedido pedidoBuscado = new(
-                            int.Parse(leitor["ID"].ToString()),
-                            new Cliente() {
-                                Cpf = leitor["CPF_CLIENTE"].ToString()
-                            },
-                            new Produto()
-                            {
-                                Id = int.Parse(leitor["ID_PRODUTO"].ToString())
-                            },
-                            int.Parse(leitor["QUANTIDADE"].ToString())
-                            
-                     );
+
+                        Pedido pedidoBuscado = new();
+
+                        pedidoBuscado.Id = int.Parse(leitor["ID"].ToString());
+                        pedidoBuscado.Cliente = new()
+                        {
+                            Cpf = leitor["CPF_CLIENTE"].ToString(),
+                        };
+                        pedidoBuscado.Produto = new()
+                        {
+                            Id = int.Parse(leitor["ID_PRODUTO"].ToString())
+                        };
+                        pedidoBuscado.DataPedido = DateTime.Parse(leitor["DATAPEDIDO"].ToString());
+                        pedidoBuscado.Quantidade = int.Parse(leitor["QUANTIDADE"].ToString());
+                        pedidoBuscado.ValorTotal = double.Parse(leitor["VALORTOTAL"].ToString());
+                        pedidoBuscado.Status = (StatusPedido)int.Parse((leitor["STATUSPEDIDO"].ToString()));
+
+                        return pedidoBuscado;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+
+        public Pedido DaoBuscarDetalhePedidoPorId(int id)
+        {
+
+            using (var conexao = new SqlConnection(_connectionString))
+            {
+                conexao.Open();
+
+                using (var comando = new SqlCommand())
+                {
+
+                    comando.Connection = conexao;
+
+                    string sql =
+                        @"SELECT 
+                            PED.ID,
+                            COALESCE(NOME, 'NÃO CADASTRADO') as NOME_CLIENTE,
+                            PED.VALORTOTAL,
+                            PED.STATUSPEDIDO,
+                            PED.QUANTIDADE,
+                            PROD.PRECOUN 
+                          FROM TB_PEDIDOS AS PED
+                            LEFT JOIN TB_CLIENTES AS CLI
+                              ON PED.CPF_CLIENTE = CLI.CPF
+                            LEFT JOIN TB_PRODUTOS AS PROD
+                              ON PED.ID_PRODUTO = PROD.ID
+                          WHERE PED.ID = @ID_PEDIDO";
+
+                    comando.CommandText = sql;
+
+                    comando.Parameters.AddWithValue("@ID_PEDIDO", id);
+
+                    var leitor = comando.ExecuteReader();
+
+                    while (leitor.Read())
+                    {
+
+                        Pedido pedidoBuscado = new();
+
+                        pedidoBuscado.Id = int.Parse(leitor["ID"].ToString());
+                        pedidoBuscado.Cliente = new()
+                        {
+                            Nome = leitor["NOME_CLIENTE"].ToString(),
+                        };
+                        pedidoBuscado.Produto = new()
+                        {
+                            Preco = double.Parse(leitor["PRECOUN"].ToString()),
+                        };
+                        pedidoBuscado.Quantidade = int.Parse(leitor["QUANTIDADE"].ToString());
+                        pedidoBuscado.ValorTotal = double.Parse(leitor["VALORTOTAL"].ToString());
+                        pedidoBuscado.Status = (StatusPedido)int.Parse((leitor["STATUSPEDIDO"].ToString()));
 
                         return pedidoBuscado;
                     }

@@ -49,6 +49,21 @@ namespace TroptechDonuts.WebApi.Controllers
             }
         }
 
+        [HttpGet("detalhe/{id}")]
+        public IActionResult GetBuscarDetalhePedidoPorId(int id)
+        {
+            try
+            {
+                var pedidoBuscado = _pedidoRepo.BuscarDetalhePedidoPorId(id);
+
+                return StatusCode(200, pedidoBuscado);
+            }
+            catch (PedidoException e)
+            {
+                return StatusCode(404, new Resultado(404, e.Message));
+            }
+        }
+
         [HttpPost]
         public IActionResult PostCadastrarPedido([FromBody] Pedido pedido)
         {

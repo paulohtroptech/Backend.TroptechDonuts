@@ -8,6 +8,8 @@ namespace TroptechDonuts.Dominio.Interfaces
 
         List<Produto> BuscarTodosProdutos();
 
+        List<Produto> BuscarTodosProdutosAtivos();
+
         Produto BuscarProdutoPorId(int id);
 
         Produto CadastrarProduto(Produto produto);

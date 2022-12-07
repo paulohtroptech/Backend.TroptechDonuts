@@ -25,7 +25,7 @@ namespace TroptechDonuts.Dominio.Entidades
             this.DataPedido = DateTime.Now;
             this.Quantidade = quantidade;
             this.ValorTotal = this.CalculaValorTotal();
-            this.Status = 0;
+            this.Status = (StatusPedido)1;
         }
 
         public Pedido()

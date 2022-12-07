@@ -22,6 +22,16 @@ namespace Troptech.Donuts.Repositorio
             return listaDeProdutos;
         }
 
+        public List<Produto> BuscarTodosProdutosAtivos()
+        {
+            var listaDeProdutos = _produtoDao.DaoBuscarTodosProdutosAtivos();
+
+            if (listaDeProdutos.Count == 0)
+                throw new ProdutoException("Ops, parece que não existe nenhum produto cadastrado.");
+
+            return listaDeProdutos;
+        }
+
         public Produto BuscarProdutoPorId(int id)
         {
             var produtoBuscado = _produtoDao.DaoBuscarProdutoPorId(id);
