@@ -55,9 +55,6 @@ namespace Troptech.Donuts.Repositorio
             if (clienteBuscado == null)
                 throw new ClienteException("Ops, parece que esse cliente não está cadastrado.");
 
-            //IMPLEMENTAR A LOGICA DE REMOVER TODOS OS PEDIDOS QUE O CLIENTE POSSUI
-
-
             _clientDao.DaoDeletarCliente(cpf);
         }
 
