@@ -9,7 +9,7 @@ namespace TroptechDonuts.Infra.Data.Dao
     public class ClienteDao
     {
 
-        private const string _connectionString = @"server=NDD-NOT-DEV504\TROPTECH;database=DB_TROPTECHDONUTS;user id=sa;password=Xw6q2@12345678;Encrypt=False";
+        private const string _connectionString = @"server=\TROPTECH;database=DB_TROPTECHDONUTS;user id=sa;password=;Encrypt=False";
 
         public List<Cliente> DaoBuscarTodosClientes()
         {
